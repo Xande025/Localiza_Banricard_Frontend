@@ -5,7 +5,7 @@ import { Restaurant } from '@/lib/api';
 import { useLoadScript } from '@react-google-maps/api';
 import { calculateDistance } from '@/lib/distance';
 
-const libraries: ("places" | "drawing" | "geometry" | "localContext" | "visualization")[] = ['places'];
+const libraries: ("places" | "drawing" | "geometry" | "visualization")[] = ['places'];
 
 interface RestaurantMapProps {
   restaurants: Restaurant[];
@@ -170,7 +170,7 @@ export function RestaurantMap({ restaurants, onMarkerClick, selectedRestaurant, 
     // Ajustar bounds para mostrar todos os marcadores
     if (markersRef.current.length > 0) {
       // Sempre ajustar bounds para incluir todos os marcadores
-      mapRef.current.fitBounds(bounds, { padding: 50 });
+      mapRef.current.fitBounds(bounds, 50);
       
       // Garantir que o zoom não fique muito alto (máximo 15)
       // Isso evita que o mapa fique muito próximo e esconda alguns pinos
