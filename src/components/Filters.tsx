@@ -55,7 +55,7 @@ export function Filters({ filters, onFiltersChange }: FiltersProps) {
     onFiltersChange({ ...filters, search: searchInput });
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSearch();
     }
@@ -82,14 +82,14 @@ export function Filters({ filters, onFiltersChange }: FiltersProps) {
     <div className="space-y-4">
       <div className="flex gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Buscar por nome ou endereço..."
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Input
+          placeholder="Buscar por nome ou endereço..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            className="pl-10"
-          />
+            onKeyDown={handleKeyDown}
+          className="pl-10"
+        />
         </div>
         <Button onClick={handleSearch} type="button">
           <Search className="h-4 w-4 mr-2" />
