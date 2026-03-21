@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { SearchableSelect } from '@/components/ui/searchable-select';
 import { restaurantApi } from '@/lib/api';
 import { Search, X } from 'lucide-react';
 
@@ -80,8 +81,8 @@ export function Filters({ filters, onFiltersChange }: FiltersProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex gap-2">
-        <div className="relative flex-1">
+      <div className="flex items-center gap-2">
+        <div className="relative min-w-0 flex-1">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder="Buscar por nome ou endereço..."
@@ -91,66 +92,62 @@ export function Filters({ filters, onFiltersChange }: FiltersProps) {
           className="pl-10"
         />
         </div>
-        <Button onClick={handleSearch} type="button">
-          <Search className="h-4 w-4 mr-2" />
-          Buscar
+        <Button
+          onClick={handleSearch}
+          type="button"
+          aria-label="Buscar"
+          className="h-10 w-10 shrink-0 p-0 sm:h-10 sm:w-auto sm:px-4"
+        >
+          <Search className="h-4 w-4 sm:mr-2" />
+          <span className="hidden sm:inline">Buscar</span>
         </Button>
-        <Button onClick={handleClearFilters} type="button" variant="outline">
-          <X className="h-4 w-4 mr-2" />
-          Limpar
+        <Button
+          onClick={handleClearFilters}
+          type="button"
+          variant="outline"
+          aria-label="Limpar filtros"
+          className="h-10 w-10 shrink-0 p-0 sm:h-10 sm:w-auto sm:px-4"
+        >
+          <X className="h-4 w-4 sm:mr-2" />
+          <span className="hidden sm:inline">Limpar</span>
         </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <Label>Cidade</Label>
-          <select
+          <SearchableSelect
             value={filters.city || ''}
-            onChange={(e) => handleCityChange(e.target.value)}
+            onValueChange={handleCityChange}
+            options={cities}
+            emptyLabel="Todas as cidades"
             disabled={loading}
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <option value="">Todas as cidades</option>
-            {cities.map((city) => (
-              <option key={city} value={city}>
-                {city}
-              </option>
-            ))}
-          </select>
+            loading={loading}
+          />
         </div>
 
         <div>
           <Label>Bairro</Label>
-          <select
+          <SearchableSelect
             value={filters.neighborhood || ''}
-            onChange={(e) => onFiltersChange({ ...filters, neighborhood: e.target.value })}
+            onValueChange={(v) => onFiltersChange({ ...filters, neighborhood: v })}
+            options={neighborhoods}
+            emptyLabel="Todos os bairros"
             disabled={!filters.city || loading}
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <option value="">Todos os bairros</option>
-            {neighborhoods.map((neighborhood) => (
-              <option key={neighborhood} value={neighborhood}>
-                {neighborhood}
-              </option>
-            ))}
-          </select>
+            loading={loading}
+          />
         </div>
 
         <div>
           <Label>Região</Label>
-          <select
+          <SearchableSelect
             value={filters.region || ''}
-            onChange={(e) => onFiltersChange({ ...filters, region: e.target.value })}
+            onValueChange={(v) => onFiltersChange({ ...filters, region: v })}
+            options={regions}
+            emptyLabel="Todas as regiões"
             disabled={loading}
-            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <option value="">Todas as regiões</option>
-            {regions.map((region) => (
-              <option key={region} value={region}>
-                {region}
-              </option>
-            ))}
-          </select>
+            loading={loading}
+          />
         </div>
       </div>
     </div>

@@ -54,7 +54,7 @@ export function RestaurantMap({ restaurants, onMarkerClick, selectedRestaurant, 
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
           scale: 8,
-          fillColor: '#4285F4',
+          fillColor: '#086BB1',
           fillOpacity: 1,
           strokeColor: '#FFFFFF',
           strokeWeight: 2,
@@ -123,7 +123,7 @@ export function RestaurantMap({ restaurants, onMarkerClick, selectedRestaurant, 
               <h3 class="font-semibold mb-1 text-lg">${restaurant.name}</h3>
               ${distanceText}
               <p class="text-sm text-gray-600 mb-1">${restaurant.address}</p>
-              <p class="text-sm text-blue-600 font-medium">${restaurant.city}</p>
+              <p class="text-sm font-medium" style="color: #086BB1">${restaurant.city}</p>
               ${restaurant.phone ? `<p class="text-sm mt-1">📞 ${restaurant.phone}</p>` : ''}
               <a 
                 href="${googleMapsUrl}" 
@@ -133,7 +133,7 @@ export function RestaurantMap({ restaurants, onMarkerClick, selectedRestaurant, 
                   display: inline-block;
                   margin-top: 8px;
                   padding: 6px 12px;
-                  background-color: #4285F4;
+                  background-color: #086BB1;
                   color: white;
                   text-decoration: none;
                   border-radius: 4px;
@@ -141,8 +141,8 @@ export function RestaurantMap({ restaurants, onMarkerClick, selectedRestaurant, 
                   font-weight: 500;
                   transition: background-color 0.2s;
                 "
-                onmouseover="this.style.backgroundColor='#357ae8'"
-                onmouseout="this.style.backgroundColor='#4285F4'"
+                onmouseover="this.style.backgroundColor='#065a94'"
+                onmouseout="this.style.backgroundColor='#086BB1'"
               >
                 🗺️ Ver no Google Maps
               </a>
@@ -217,7 +217,7 @@ export function RestaurantMap({ restaurants, onMarkerClick, selectedRestaurant, 
 
   if (loadError) {
     return (
-      <div className="h-[600px] flex items-center justify-center bg-muted">
+      <div className="flex min-h-[280px] flex-1 items-center justify-center rounded-lg bg-muted lg:min-h-0">
         <p className="text-destructive">Erro ao carregar o mapa. Verifique a chave da API do Google Maps.</p>
       </div>
     );
@@ -225,16 +225,16 @@ export function RestaurantMap({ restaurants, onMarkerClick, selectedRestaurant, 
 
   if (!isLoaded) {
     return (
-      <div className="h-[600px] flex items-center justify-center bg-muted">
+      <div className="flex min-h-[280px] flex-1 items-center justify-center rounded-lg bg-muted lg:min-h-0">
         <p>Carregando mapa...</p>
       </div>
     );
   }
 
   return (
-    <div className="h-[600px] w-full">
+    <div className="flex h-full w-full min-h-[280px] flex-col">
       {userLocation && (
-        <div className="mb-2 p-2 bg-blue-50 border border-blue-200 rounded text-sm">
+        <div className="mb-2 shrink-0 rounded-md border border-primary/20 bg-primary/5 p-2 text-sm text-primary">
           📍 Mostrando estabelecimentos próximos à sua localização
         </div>
       )}
@@ -248,7 +248,7 @@ export function RestaurantMap({ restaurants, onMarkerClick, selectedRestaurant, 
             setMapLoaded(true);
           }
         }}
-        className="h-full w-full rounded-lg"
+        className="min-h-0 flex-1 overflow-hidden rounded-lg"
       />
     </div>
   );

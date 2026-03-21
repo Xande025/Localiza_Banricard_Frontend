@@ -19,6 +19,8 @@ export interface Restaurant {
   createdBy?: string | null;
   createdAt: string;
   updatedAt: string;
+  /** Preenchido quando a lista vem do filtro geo (lat/lng/radiusKm) */
+  distanceKm?: number;
 }
 
 export interface ApiResponse<T> {
@@ -37,7 +39,17 @@ class ApiClient {
   }
 
   async get<T>(endpoint: string, params?: Record<string, any>): Promise<ApiResponse<T>> {
-    const queryString = params ? new URLSearchParams(params).toString() : '';
+    const clean =
+      params &&
+      Object.fromEntries(
+        Object.entries(params).filter(
+          ([, v]) => v !== undefined && v !== null && v !== ''
+        )
+      );
+    const queryString =
+      clean && Object.keys(clean).length > 0
+        ? new URLSearchParams(clean as Record<string, string>).toString()
+        : '';
     const url = `${this.baseURL}${endpoint}${queryString ? '?' + queryString : ''}`;
     const response = await axios.get(url);
     return response.data;
@@ -70,6 +82,10 @@ export const restaurantApi = {
     verified?: boolean;
     limit?: number;
     offset?: number;
+    /** Com os três, o backend filtra por distância (km) no banco */
+    lat?: number;
+    lng?: number;
+    radiusKm?: number;
   }) => api.get<Restaurant[]>('/restaurants', filters),
 
   getById: (id: number) => api.get<Restaurant>(`/restaurants/${id}`),
